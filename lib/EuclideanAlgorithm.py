@@ -1,18 +1,18 @@
-
 from sage.all import *
-from numpy import NaN
 
+def extended_gcd(a, b, x=None, y=None, count=1):
+    if x is None:
+        x = [1, 0]
+    if y is None:
+        y = [0, 1]
 
-def EuclideanAlgorithm(a,b,_x=[1,0],_y=[0,1],_count=1):
-    x = _x
-    y = _y
-    c = _count + 1
     r = a % b
     q = a // b
-    x.append(x[c-2] - q*x[c-1])
-    y.append(y[c-2] - q*y[c-1])
+    x.append(x[count-1] - q*x[count])
+    y.append(y[count-1] - q*y[count])
+    
     if r == 0:
-        return (a,x[c-2],y[c-2])
+        # 最后一个非零余数的系数就是 gcd 的贝祖系数
+        return (b, x[count], y[count])
     else:
-        return EuclideanAlgorithm(b,r,x,y,c)
-
+        return extended_gcd(b, r, x, y, count+1)
